@@ -8,7 +8,7 @@
 
 /*Sematic tags - Etiquetas semánticas*/
 header {
-    height : 10vh;
+    height : 5vh;
 }
 
 h1 {
@@ -82,6 +82,17 @@ footer {
 .errorMessages {
     color: rgb(184, 40, 40);
     font-weight: bold;
+}
+
+#keyboard {
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+#keyboard .key{
+    width : 8%;
+    margin: 1%;
+    background-color: rgb(217, 225, 67);
 }
 
 /* Buttons*/

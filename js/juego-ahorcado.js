@@ -1,6 +1,8 @@
 //Variables 
 const btnStartGame = document.querySelector('.btnStartGame'); 
 const btnAddWord = document.querySelector('.btnAddWord');
+const keyboard = document.querySelector('#keyboard');
+const keys = document.querySelectorAll('.key'); 
 
 const imgHangMan = document.querySelector('.containerImages img'); 
 const errorMessages = document.querySelector('.errorMessages'); 
@@ -44,12 +46,25 @@ document.addEventListener('keydown', (event) => {
   */
 }, false);
 
+//Eventos para las teclas del teclado
+keys.forEach(key => {
+    key.addEventListener('click',() => {
+        if (enableGame) {    
+            VerifyWord(key.value);    
+        }
+    }); 
+}); 
+
 btnStartGame.addEventListener('click', () => {
     clearInterval(refreshImage);
     ClearErrorMessages();
     ClearWords();
 
     correctLetters = 0;
+
+    keyboard.classList.add('dp-flex'); 
+    keyboard.classList.remove('dp-none');
+
     errorMessages.style.display = 'block';
     errorMessages.style.color = 'rgb(184, 40, 40)';
     wrongLetters = [];
@@ -142,8 +157,11 @@ btnAddWord.addEventListener('click', () => {
         } else {
             enableGame = true; 
             numberError = 0; 
-            inputNewWord.classList.add('dp-none');
 
+            inputNewWord.classList.add('dp-none');
+            keyboard.classList.add('dp-flex'); 
+            keyboard.classList.remove('dp-none');
+            
             let inputNewWordToUpper = inputNewWord.value.toUpperCase();
             console.log(words);
 
@@ -317,6 +335,9 @@ function CreateMainButtons() {
         clearInterval(refreshImage);
         numberError = 0; 
 
+        keyboard.classList.add('dp-flex'); 
+        keyboard.classList.remove('dp-none');
+    
         errorMessages.style.display = 'block';
         errorMessages.style.color = 'rgb(184, 40, 40)';
         wrongLetters = []; 
@@ -348,6 +369,10 @@ function CreateMainButtons() {
         resizeImage();
         ClearErrorMessages();
         clearInterval(refreshImage);
+
+        keyboard.classList.add('dp-none'); 
+        keyboard.classList.remove('dp-flex');
+    
         numberError = 0; 
         correctLetters = 0;
         enableGame = false;
