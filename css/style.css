@@ -7,19 +7,23 @@
 /*Main View - Vista Principal*/
 
 /*Sematic tags - Etiquetas semánticas*/
+header {
+    height : 10vh;
+}
+
 h1 {
     font-size: 3vw;
     font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
     padding: 1rem; 
     background-color: #73C118;
     border-radius: 2rem;
+    margin: 0;
 }
 
 main {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 80vh;
     flex-direction: column;
     font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
     gap: 1.5vh;
@@ -50,6 +54,11 @@ span {
     height: auto;
     margin: 0 auto;
     background-color: #31474C;
+}
+
+footer {
+    height: 10vh; 
+    margin-top: 1rem;
 }
 
 /*Common classes - Clases comunes*/

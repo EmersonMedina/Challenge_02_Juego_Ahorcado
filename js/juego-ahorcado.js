@@ -9,8 +9,11 @@ const containerButtons = document.querySelector('.containerButtons');
 
 let selectedWord = ''; 
 let numberError = 0; 
+let correctLetters = 0; 
 let enableGame = false; 
 let refreshImage; 
+let wrongLetters = []; 
+let selectedWordPosition; 
 
 const words = []; 
 words.push("JAVASCRIPT"); 
@@ -43,7 +46,13 @@ document.addEventListener('keydown', (event) => {
 
 btnStartGame.addEventListener('click', () => {
     clearInterval(refreshImage);
+    ClearErrorMessages();
     ClearWords();
+
+    correctLetters = 0;
+    errorMessages.style.display = 'block';
+    errorMessages.style.color = 'rgb(184, 40, 40)';
+    wrongLetters = [];
 
     imgHangMan.src = ''; 
     imgHangMan.alt = ''; 
@@ -74,10 +83,18 @@ btnAddWord.addEventListener('click', () => {
 
     btnSaveAndStart.addEventListener('click', () => {
         clearInterval(refreshImage);
+        correctLetters = 0;
+
+        errorMessages.style.display = 'block';
+        errorMessages.style.color = 'rgb(184, 40, 40)';
+        wrongLetters = [];
+
         errorMessages.classList.remove('dp-none');
 
         const checkWhiteSpaces = /\s/; 
         const checkNumbers = /[0-9]/
+        const checkAccents = /[\u00C0-\u017F]/
+        const checkSpecialCharacters =/[a-zA-Z]/; 
         let hasError = false; 
 
         ClearErrorMessages();
@@ -89,6 +106,23 @@ btnAddWord.addEventListener('click', () => {
             hasError = true;      
         }
 
+        if (checkAccents.test(inputNewWord.value)) {
+            const mensaje = CreateElement('p'); 
+            mensaje.textContent = 'La palabra no puede contener acentos'; 
+            errorMessages.appendChild(mensaje);
+            hasError = true;  
+        }
+
+        for (let i = 0; i < inputNewWord.value.length; i++) {
+            if (!checkSpecialCharacters.test(inputNewWord.value[i])) {
+                const mensaje = CreateElement('p'); 
+                mensaje.textContent = 'La palabra no puede contener caracteres especiales'; 
+                errorMessages.appendChild(mensaje);
+                hasError = true;  
+                i = inputNewWord.value.length; 
+            }    
+        }
+        
         if (checkWhiteSpaces.test(inputNewWord.value)) {
             const mensaje = CreateElement('p'); 
             mensaje.textContent = 'La palabra no puede contener espacios en blanco'; 
@@ -121,7 +155,9 @@ btnAddWord.addEventListener('click', () => {
 
     btnCancel.addEventListener('click', ()=> {
         numberError = 0; 
+        correctLetters = 0;
         enableGame = false;
+        ClearErrorMessages();
         CreateMainView();
     }); 
     
@@ -147,19 +183,62 @@ function VerifyWord(word) {
     console.log(word);
     console.log(selectedWord);
 
-    for (let i = 0; i<selectedWord.length; i++) {
-        if (selectedWord[i] === word) {
-            selectedWord = selectedWord.replaceAt(i, '0'); 
-            console.log('La letra SI está en la palabra');
-            InsertWord(i, word); 
-            return;  
-        } 
+    while (selectedWord.includes(word)){ 
+        for (let i = 0; i<selectedWord.length; i++) {
+            if (selectedWord[i] === word) {
+                correctLetters++; 
+                selectedWord = selectedWord.replaceAt(i, '0'); 
+                console.log('La letra SI está en la palabra');
+                InsertWord(i, word);   
+            } 
+        }            
     }
+    
+    if (correctLetters == words[selectedWordPosition].length ) {
+        Winner(); 
+    }
+
+    if (words[selectedWordPosition].includes(word)){ 
+        return; 
+    }
+
+    if (!wrongLetters.includes(word)){ 
+        wrongLetters.push(word);
+    } else {
+        alert(`La letra ${word} ya ha sido ingresada`);
+        return;
+    }
+
+    ClearErrorMessages(); 
+    wrongLetters.forEach(letter => {
+        let span = CreateElement('span'); 
+        span.textContent = letter; 
+        errorMessages.appendChild(span); 
+    }); 
 
     numberError++; 
     ErrorInWord(numberError); 
     console.log('La letra NO está en la palabra'); 
 }
+
+function Winner() {
+    enableGame = false;
+    correctLetters = 0; 
+    ClearErrorMessages(); 
+    errorMessages.style.display = 'flex';
+
+    const imgWin = CreateElement('img'); 
+    imgWin.src = 'images/win.png'; 
+    imgWin.alt = 'imagen ganador'; 
+
+    const winMessage = CreateElement('p'); 
+    winMessage.textContent = `Ganaste, Felicidades!`; 
+
+    errorMessages.style.color = '#73C118';
+    errorMessages.appendChild(imgWin);
+    errorMessages.appendChild(winMessage); 
+}
+
 
 function InsertWord(position, word) {
     let words = document.querySelectorAll('.words span');
@@ -231,9 +310,16 @@ function CreateMainButtons() {
     const buttonDesist = document.querySelector('.btnDesist'); 
 
     buttonNewGame.addEventListener('click', () => {
+        enableGame = true;
+        correctLetters = 0;
         resizeImage();
+        ClearErrorMessages();
         clearInterval(refreshImage);
         numberError = 0; 
+
+        errorMessages.style.display = 'block';
+        errorMessages.style.color = 'rgb(184, 40, 40)';
+        wrongLetters = []; 
 
         imgHangMan.src = ''; 
         imgHangMan.alt = ''; 
@@ -245,6 +331,7 @@ function CreateMainButtons() {
     
         let position = RandomNumber(words.length - 1 ); 
     
+        selectedWordPosition = position;
         selectedWord = words[position];
         console.log(words);
         let selectedWordArray = Array.from(selectedWord); 
@@ -259,8 +346,10 @@ function CreateMainButtons() {
 
     buttonDesist.addEventListener('click', () => {
         resizeImage();
+        ClearErrorMessages();
         clearInterval(refreshImage);
         numberError = 0; 
+        correctLetters = 0;
         enableGame = false;
         CreateMainView();
     }); 
@@ -290,10 +379,10 @@ function CreateGameBoard ()  {
     const divWord = document.querySelector('.words'); 
     divWord.classList.add('txt-center'); 
 
-    let position = RandomNumber(words.length - 1); 
+    selectedWordPosition = RandomNumber(words.length - 1); 
 
-    selectedWord = words[position];
-    console.log(position);
+    selectedWord = words[selectedWordPosition];
+    console.log(selectedWordPosition);
     console.log(selectedWord); 
     let selectedWordArray = Array.from(selectedWord); 
 
@@ -395,7 +484,7 @@ function ErrorInWord(numberError){
             break;
         case 8: 
             ShowRightLeg();
-          //  GameOver();  
+            GameOver();  
             break;  
     }
 }; 
@@ -404,4 +493,21 @@ function ClearErrorMessages () {
     while (errorMessages.firstChild) {
         errorMessages.removeChild(errorMessages.firstChild); 
     }
+}
+
+function GameOver() {
+    enableGame = false;
+    correctLetters = 0;
+    ClearErrorMessages(); 
+    errorMessages.style.display = 'flex';
+
+    const imgGameOver = CreateElement('img'); 
+    imgGameOver.src = 'images/game-over.png'; 
+    imgGameOver.alt = 'imagen game over'; 
+
+    const gameOverMessage = CreateElement('p'); 
+    gameOverMessage.textContent = `Intentalo de nuevo, la palabra correcta era: ${words[selectedWordPosition]}`; 
+
+    errorMessages.appendChild(imgGameOver);
+    errorMessages.appendChild(gameOverMessage); 
 }
