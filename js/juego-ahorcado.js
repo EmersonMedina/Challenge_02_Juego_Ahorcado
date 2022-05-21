@@ -9,6 +9,11 @@ const errorMessages = document.querySelector('.errorMessages');
 const main = document.querySelector('main');
 const containerButtons = document.querySelector('.containerButtons');  
 
+const errorSound = new Audio('sounds/error.wav');
+const rightSound = new Audio('sounds/done.wav');
+const gameOverSound = new Audio('sounds/game-over.wav');
+const winSound = new Audio('sounds/win.wav'); 
+
 let selectedWord = ''; 
 let numberError = 0; 
 let correctLetters = 0; 
@@ -221,6 +226,7 @@ function VerifyWord(word) {
     }
 
     if (!wrongLetters.includes(word)){ 
+        errorSound.play();
         wrongLetters.push(word);
     } else {
         alert(`La letra ${word} ya ha sido ingresada`);
@@ -240,6 +246,7 @@ function VerifyWord(word) {
 }
 
 function Winner() {
+    winSound.play();
     enableGame = false;
     correctLetters = 0; 
     ClearErrorMessages(); 
@@ -259,6 +266,7 @@ function Winner() {
 
 
 function InsertWord(position, word) {
+    rightSound.play();
     let words = document.querySelectorAll('.words span');
     
     words[position].textContent = word;     
@@ -521,6 +529,7 @@ function ClearErrorMessages () {
 }
 
 function GameOver() {
+    gameOverSound.play();
     enableGame = false;
     correctLetters = 0;
     ClearErrorMessages(); 
