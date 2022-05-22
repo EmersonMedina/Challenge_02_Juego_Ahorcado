@@ -44,11 +44,6 @@ document.addEventListener('keydown', (event) => {
             VerifyWord(keyValue); 
         }
     }
-/*
-    console.log("keyValue: " + keyValue);
-    console.log("codeValue: " + codeValue);
-    console.log(event);
-  */
 }, false);
 
 //Eventos para las teclas del teclado
@@ -67,6 +62,7 @@ btnStartGame.addEventListener('click', () => {
 
     correctLetters = 0;
 
+    main.style.height = 'auto'; 
     keyboard.classList.add('dp-flex'); 
     keyboard.classList.remove('dp-none');
 
@@ -80,8 +76,6 @@ btnStartGame.addEventListener('click', () => {
     CreateGameBoard();
 
     CreateMainButtons();
-
-    console.log(words); 
 
 })
 
@@ -163,12 +157,12 @@ btnAddWord.addEventListener('click', () => {
             enableGame = true; 
             numberError = 0; 
 
+            main.style.height = 'auto'; 
             inputNewWord.classList.add('dp-none');
             keyboard.classList.add('dp-flex'); 
             keyboard.classList.remove('dp-none');
             
             let inputNewWordToUpper = inputNewWord.value.toUpperCase();
-            console.log(words);
 
             SaveAndStart(inputNewWordToUpper); 
             inputNewWord.value = '';
@@ -203,15 +197,13 @@ function ShowMainSections() {
 }
 
 function VerifyWord(word) {
-    console.log(word);
-    console.log(selectedWord);
+
 
     while (selectedWord.includes(word)){ 
         for (let i = 0; i<selectedWord.length; i++) {
             if (selectedWord[i] === word) {
                 correctLetters++; 
                 selectedWord = selectedWord.replaceAt(i, '0'); 
-                console.log('La letra SI está en la palabra');
                 InsertWord(i, word);   
             } 
         }            
@@ -242,7 +234,6 @@ function VerifyWord(word) {
 
     numberError++; 
     ErrorInWord(numberError); 
-    console.log('La letra NO está en la palabra'); 
 }
 
 function Winner() {
@@ -264,7 +255,6 @@ function Winner() {
     errorMessages.appendChild(winMessage); 
 }
 
-
 function InsertWord(position, word) {
     rightSound.play();
     let words = document.querySelectorAll('.words span');
@@ -282,7 +272,6 @@ function SaveAndStart(inputNewWord) {
    imgHangMan.src = ''; 
    imgHangMan.alt = ''; 
 
-   console.log(words);
    CreateGameBoard();
    CreateMainButtons();
 }; 
@@ -362,7 +351,7 @@ function CreateMainButtons() {
     
         selectedWordPosition = position;
         selectedWord = words[position];
-        console.log(words);
+
         let selectedWordArray = Array.from(selectedWord); 
 
         for (word of selectedWordArray) {
@@ -378,6 +367,7 @@ function CreateMainButtons() {
         ClearErrorMessages();
         clearInterval(refreshImage);
 
+        main.style.height = '70vh'; 
         keyboard.classList.add('dp-none'); 
         keyboard.classList.remove('dp-flex');
     
@@ -415,8 +405,7 @@ function CreateGameBoard ()  {
     selectedWordPosition = RandomNumber(words.length - 1); 
 
     selectedWord = words[selectedWordPosition];
-    console.log(selectedWordPosition);
-    console.log(selectedWord); 
+
     let selectedWordArray = Array.from(selectedWord); 
 
     for (word of selectedWordArray) {
@@ -435,21 +424,12 @@ function ClearContainerButtons() {
     }
 }
 
-function ClearMain() {
-   sectGameBoard
-}
-
 function ClearWords() { 
     const divWord = document.querySelector('.words');
     while (divWord.firstChild) {
         divWord.removeChild(divWord.firstChild);
     } 
-}
-
-function ClearButtonsMain() {
-   btnStartGame.remove();
-   btnAddWord.remove();  
-}   
+} 
 
 /*Hangman drawing and mistakes*/
 
@@ -490,7 +470,6 @@ function ShowRightLeg() {
         imgHangMan.src = 'images/hangman-final.gif';
     }, 4470);
 };
-
 
 function ErrorInWord(numberError){ 
     switch(numberError) {
