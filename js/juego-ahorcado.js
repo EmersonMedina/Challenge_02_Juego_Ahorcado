@@ -33,6 +33,27 @@ words.push("MASCOTA");
 words.push("TECLADO"); 
 words.push("ALURA"); 
 words.push("TESTING"); 
+words.push("MENSAJE"); 
+words.push("LAPIZ");
+words.push("CUADERNO"); 
+words.push("CARRO"); 
+words.push("CASA");
+words.push("BOTELLA");
+words.push("SILLA"); 
+words.push("CABALLO");
+words.push("GORRA"); 
+words.push("LENTE");
+words.push("LAMPARA");
+words.push("MOTO");
+words.push("CALLE");
+words.push("LENTE");
+words.push("SONIDO");
+words.push("GATO");
+words.push("PERRO");
+words.push("RATON");
+words.push("ESTUDIO");
+words.push("PELOTA");
+words.push("CAMPO");
 
 //Events 
 document.addEventListener('keydown', (event) => {
