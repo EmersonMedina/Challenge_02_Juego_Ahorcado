@@ -13,3 +13,5 @@ Desarrollo del Challenge #2 que corresponde al juego del ahorcado, el proyecto d
 Este proyecto cumple con las especificaciones y tiene algunas características extra, todo con la finalidad de poner en práctica lo aprendido durante los cursos. 
 
 La imagen del personaje que aparece en el juego no es de mi propiedad, la obtube de:https://replit.com/@ashusharma07/Hangman-Game y los derechos de autor corresponden a ese usuario.  
+
+El link para ver el juego es: https://emersonmedina.github.io/Challenge_02_Juego_Ahorcado/
