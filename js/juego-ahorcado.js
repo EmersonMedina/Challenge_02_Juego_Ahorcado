@@ -67,7 +67,7 @@ document.addEventListener('keydown', (event) => {
     }
 }, false);
 
-//Eventos para las teclas del teclado
+//Eventos para las teclas del teclado en pantalla
 keys.forEach(key => {
     key.addEventListener('click',() => {
         if (enableGame) {    
@@ -219,7 +219,6 @@ function ShowMainSections() {
 
 function VerifyWord(word) {
 
-
     while (selectedWord.includes(word)){ 
         for (let i = 0; i<selectedWord.length; i++) {
             if (selectedWord[i] === word) {
@@ -312,8 +311,7 @@ function CreateMainView() {
     sectGameBoard.classList.add('dp-none'); 
     sectErrorMessages.classList.add('dp-none');
 
-    ClearContainerButtons();
-    
+    ClearContainerButtons();   
 
     containerButtons.classList.remove('flex-row');
     containerButtons.classList.add('flex-column');
@@ -452,6 +450,12 @@ function ClearWords() {
     } 
 } 
 
+function ClearErrorMessages () {
+    while (errorMessages.firstChild) {
+        errorMessages.removeChild(errorMessages.firstChild); 
+    }
+}
+
 /*Hangman drawing and mistakes*/
 
 function ShowVerticalPole() {
@@ -521,12 +525,6 @@ function ErrorInWord(numberError){
             break;  
     }
 }; 
-
-function ClearErrorMessages () {
-    while (errorMessages.firstChild) {
-        errorMessages.removeChild(errorMessages.firstChild); 
-    }
-}
 
 function GameOver() {
     gameOverSound.play();
