@@ -21,6 +21,7 @@ let enableGame = false;
 let refreshImage; 
 let wrongLetters = []; 
 let selectedWordPosition; 
+let isNewWord = false;
 
 const words = []; 
 words.push("JAVASCRIPT"); 
@@ -292,7 +293,7 @@ function SaveAndStart(inputNewWord) {
    imgHangMan.src = ''; 
    imgHangMan.alt = ''; 
 
-   CreateGameBoard();
+   CreateGameBoard(true);
    CreateMainButtons();
 }; 
 
@@ -412,20 +413,32 @@ function CreateBtnsAddWord() {
     containerButtons.appendChild(btnCancel); 
 }
 
-function CreateGameBoard ()  {
+function CreateGameBoard (isNewWord)  {
     enableGame = true; 
     ClearWords();
     ClearContainerButtons();
     ShowMainSections(); 
 
+    let selectedWordArray; 
+
     const divWord = document.querySelector('.words'); 
     divWord.classList.add('txt-center'); 
 
+    if (isNewWord) {
+        selectedWordPosition = words.length - 1 ; 
+
+        selectedWord = words[selectedWordPosition];
+    
+        selectedWordArray = Array.from(selectedWord); 
+    } else {
+        
     selectedWordPosition = RandomNumber(words.length - 1); 
 
     selectedWord = words[selectedWordPosition];
 
-    let selectedWordArray = Array.from(selectedWord); 
+    selectedWordArray = Array.from(selectedWord); 
+
+    }
 
     for (word of selectedWordArray) {
         let span = CreateElement('span');
@@ -433,6 +446,7 @@ function CreateGameBoard ()  {
         span.textContent = "_";
         divWord.appendChild(span);
     }
+    
 }
 
 /*Clears*/ 
